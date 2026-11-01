@@ -1,1 +1,1 @@
-SQL LAB 1
+SQL all LABS & TASKS
