@@ -1,0 +1,59 @@
+SELECT * FROM transactions;
+
+-- RANKING 1234
+SELECT transaction_TYPE,AMOUNT,row_number() OVER () FROM transactions;
+
+-- ORDER BY AMT , A TO Z
+SELECT transaction_TYPE,AMOUNT,row_number() OVER (order by AMOUNT) FROM transactions;
+
+--  Z TO A 
+SELECT transaction_TYPE,AMOUNT,row_number() OVER (order by AMOUNT DESC) FROM transactions;
+
+-- CLASSIFIES BY GROUPING RANKS (DEP 123, WTH 12)
+SELECT transaction_TYPE,AMOUNT,row_number() OVER (partition by TRANSACTION_TYPE order by AMOUNT) FROM transactions;
+
+-- LAG
+SELECT TRANSACTION_DATE,transaction_TYPE,AMOUNT,
+LAG (AMOUNT) OVER(ORDER BY TRANSACTION_DATE)
+FROM TRANSACTIONS;
+
+SELECT TRANSACTION_DATE,transaction_TYPE,AMOUNT,
+LAG(AMOUNT) OVER(partition by TRANSACTION_TYPE order by transaction_DATE)
+FROM TRANSACTIONS;
+
+-- LEAD
+SELECT TRANSACTION_DATE,transaction_TYPE,AMOUNT,
+LAG (AMOUNT) OVER(ORDER BY TRANSACTION_DATE)
+FROM TRANSACTIONS;
+
+SELECT TRANSACTION_DATE,transaction_TYPE,AMOUNT,
+LEAD(AMOUNT) OVER(partition by TRANSACTION_TYPE order by transaction_DATE)
+FROM TRANSACTIONS;
+
+CREATE table SCHOOL(
+NAME varchar (100),
+MARKS INT);
+SELECT * FROM SCHOOL;
+
+INSERT INTO SCHOOL VALUE("A",78),("B",79),("C",60),("D",79),("E",69),("F",79);
+
+-- RANK 
+SELECT NAME,MARKS,RANK() OVER (order by MARKS) FROM SCHOOL;
+-- RANK SKIP
+ SELECT NAME,MARKS,rank() OVER (order by MARKS DESC) FROM SCHOOL;
+ -- DENSE RANK
+ SELECT NAME,MARKS,dense_rank() OVER (order by MARKS DESC) FROM SCHOOL;
+ 
+ -- combine
+ SELECT NAME,MARKS,row_number() over(order by marks desc),
+ rank()over(order by marks desc),
+ dense_rank()over(order by marks desc)
+ from school;
+ 
+ 
+ -- LAB 7
+select * from loans;
+SELECT LOAN_ID,LOAN_AMOUNT, RANK() OVER (ORDER BY LOAN_AMOUNT) FROM LOANS;
+SELECT LOAN_ID,LOAN_AMOUNT, dense_rank() OVER (ORDER BY LOAN_AMOUNT DESC) FROM LOANS;
+SELECT LOAN_ID,LOAN_AMOUNT, ROW_NUMBER() OVER(order by LOAN_AMOUNT DESC) FROM LOANS;
+
